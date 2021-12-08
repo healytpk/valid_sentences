@@ -27,7 +27,7 @@ int main(void)
 
 #include "generator.hpp"
 
-Generator<std::uintmax_t> ExtractDecimalNumbers(std::string_view const s);
+Generator<std::uintmax_t> ExtractDecimalNumbers(std::string_view const &s);
 
 #include <cstdint>     /* uintmax_t */
 #include <cctype>      /* isalpha, islower, isdigit */
