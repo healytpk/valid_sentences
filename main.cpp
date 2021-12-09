@@ -25,7 +25,7 @@ int main(void)
     }
 }
 
-#include "generator.hpp"
+#include "generator.hpp" /* supporting type for coroutines */
 
 Generator<std::uintmax_t> ExtractDecimalNumbers(std::string_view const &s);
 
@@ -34,7 +34,6 @@ Generator<std::uintmax_t> ExtractDecimalNumbers(std::string_view const &s);
 #include <cstring>     /* strchr */
 #include <charconv>    /* from_chars */
 #include <algorithm>   /* count */
-#include <cstdlib>     /* strtoull */
 
 bool IsValid(std::string_view const &s)
 {
@@ -65,21 +64,6 @@ bool IsValid(std::string_view const &s)
     return true;
 }
 
-void from_chars(char const *p, char const *q, uintmax_t &i, int base)
-{
-    unsigned const len = q - p + 1u;
-
-    char *z = new char[len + 1u];
-    
-    memcpy(z,p,len);
-
-    z[len] = '\0';
-    
-   i = std::strtoul(z, nullptr, 10);
-   
-   delete [] z;
-}
-
 Generator<std::uintmax_t> ExtractDecimalNumbers(std::string_view const &s)
 {
     using std::isdigit;
@@ -98,9 +82,9 @@ Generator<std::uintmax_t> ExtractDecimalNumbers(std::string_view const &s)
 
         if ( &s.back() < p ) --p;
 
-        uintmax_t number;
+        std::uintmax_t number;
     
-        from_chars( pfirst, p, number, 10u );
+        std::from_chars( pfirst, p, number, 10u );
 
         co_yield number;
     }
