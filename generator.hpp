@@ -1,16 +1,15 @@
-
 /*
 The latest C++ Standard of 2020 has new
 keywords such as 'co_yield' and 'co_return'
 to accommodate coroutines, however the standard
 library is still lacking the required supporting
-types. For the time being, until the supporting
-types are added in C++23, I will use the free
-open-source 'Generator' class defined in this
-header file.
+classes. For the time being, until the supporting
+classes are added in C++23, I will use the open-
+source 'Generator' class defined in this header file.
 */
 
-#pragma once
+#ifndef HPP__GENERATOR
+#define HPP__GENERATOR
 
 #include <coroutine>
 #include <stdexcept>
@@ -20,7 +19,7 @@ struct Generator {
 
   struct promise_type;
 
-  typedef std::coroutine_handle<promise_type> handle_type;
+  using handle_type = std::coroutine_handle<promise_type>;
 
   struct promise_type {
     T value_;
@@ -69,16 +68,16 @@ private:
 
   void fill()
   {
-    if ( !full_ )
+    if (!full_)
     {
       h_();
-      
+
       if (h_.promise().exception_)
-      {
         std::rethrow_exception(h_.promise().exception_);
-      }
+
       full_ = true;
     }
   }
 };
 
+#endif  // ifndef HPP__GENERATOR
